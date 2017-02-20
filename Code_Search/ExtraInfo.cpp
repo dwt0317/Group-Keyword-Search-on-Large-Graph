@@ -12,11 +12,12 @@ bool generateKeyword(int NodeNum, int MaxKeyWordNum, std::string filename) {
 
 	if (!outKeyFile)
 		return false;
-	//Ëæ»ú
+
 	srand((unsigned)time(NULL));
 
 	for (int i = 0; i < NodeNum; i++) {
 		int keyword = rand() % MaxKeyWordNum;
+
 		if (keyword) {
 			fprintf(outKeyFile, "%d\n", keyword);
 		}
@@ -51,6 +52,7 @@ bool getData(std::string filename, int NodeNum, int *Store) {
 	if (!File)
 		return false;
 
+	//get Store[]
 	for (int i = 0; i < NodeNum; i++) {
 		fscanf(File, "%d", Store + i);
 	}

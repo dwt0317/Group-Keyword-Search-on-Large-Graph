@@ -4,7 +4,9 @@
 #include <vector>
 #include "BlockPool.h"
 
-extern std::vector<std::vector<int>> *BlockID; 
-extern BlockPool *blockPool;; 
+extern std::vector<std::vector<int>> *BlockID; //each nodes' blockID
+extern BlockPool *blockPool;; //BlockPool
+//extern BlockPool** blockpoolArray;
+//extern vector<BlockPool> blockpoolArray;
 
 #endif

@@ -4,6 +4,7 @@
 #include <vector>
 #include "ExtraInfo.h" 
 
+//用于搜索过程中记录访问信息
 class VisitInfo
 {
 public:

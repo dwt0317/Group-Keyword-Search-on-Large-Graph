@@ -9,6 +9,7 @@
 #include "BlockPool.h"
 using namespace std;
 
+//Group keyword search º¯Êý¶¨Òå
 extern int **portalMatrix;
 extern int portalNum;
 extern int* portalMtrxIndex;

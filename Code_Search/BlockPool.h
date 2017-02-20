@@ -5,6 +5,7 @@
 #include "macro.h"
 #include<iostream>
 
+//存储block信息的结构
 class BlockPool
 {
 public:

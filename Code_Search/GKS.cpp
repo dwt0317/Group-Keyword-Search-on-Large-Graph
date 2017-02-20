@@ -34,6 +34,7 @@ int rateTotal = 0;
 
 bool RatingComp(int A, int B) {return NodeRating[A] > NodeRating[B];}
 
+//初始化搜索
 void GKS_Query(int StartNode, vector<KeyWord> KSet, pair<int, int> Cuslimit, BlockPool& blockPool) {
 
 	OptRating = 0;
@@ -89,7 +90,7 @@ void GKS_Query(int StartNode, vector<KeyWord> KSet, pair<int, int> Cuslimit, Blo
 	}
 }
 
-
+//寻找满足第一距离约束的点集合
 void SearchFirstDist(int StartNode, vector<vector<int>> *invertList, bool *visited, vector<KeyWord>& KSet, int Farthest) {
 
 	int IntraID = 0;  	//find intra block's nodeid
@@ -139,13 +140,11 @@ void SearchFirstDist(int StartNode, vector<vector<int>> *invertList, bool *visit
 						//searchPortalMatrix(StartNode, pnode, spdist, Farthest, invertlistArray, visited, visitedArray, sRmtpDistArrayS, KSet, blockpoolArray[threadId]);
 						searchPortalMatrix(StartNode, pnode, spdist, Farthest, invertList, visited, sRmtpDistMap, KSet);
 					}
-					//这个else break直接少了1/3的计算量，这个程序里nodeToPortal是sort过的
+					//这个else break直接少了1/3的计算量，nodeToPortal是sort过的
 					else
 						break;
 				}//if (pdist)
 			}//foreach portal
-			//clock_t end6 = clock();
-			//time6 += static_cast<double>(end6 - start6);
 		}
 	}
 	sRmtpDistMapArray[0]->clear();
@@ -153,6 +152,7 @@ void SearchFirstDist(int StartNode, vector<vector<int>> *invertList, bool *visit
 
 }
 
+//搜索portal node矩阵
 void searchPortalMatrix(int startNode, int pnode, int spDist, int Farthest, vector<vector<int>> *invertList, bool *startVisited, hash_map<int, int>* sRmtpDistMap,
 	vector<KeyWord>& KSet){
 
@@ -161,14 +161,12 @@ void searchPortalMatrix(int startNode, int pnode, int spDist, int Farthest, vect
 	int sRmtpDist = 0; //start -> remote portal distance
 	portalMtrxId = portalMtrxIndex[pnode];     //startPortal的matrix id
 
-
 	int threadId = omp_get_thread_num();
 
 	for (int i = 1; i < portalDistIndex[portalMtrxId][0].NodeID; i++){
 		bool feasiblePortal = true;
 		int portalDist = portalDistIndex[portalMtrxId][i].Dist;
 		portalGlobalId = portalDistIndex[portalMtrxId][i].NodeID;
-
 
 		if ((portalDist + spDist <= Farthest && portalDist != 0) || pnode == portalGlobalId)  //portalIndex
 		{
@@ -228,10 +226,9 @@ void searchPortalMatrix(int startNode, int pnode, int spDist, int Farthest, vect
 		else if (portalDist + spDist > Farthest)
 			break;
 	}
-
-	//	}
 }
 
+//搜索起始block
 void doStartBlock(int StartNode, vector<vector<int>> *invertList, bool *startVisit, vector<KeyWord>& KSet, int Farthest){
 	int blockcount2 = (*BlockID)[StartNode].size();
 
@@ -267,6 +264,7 @@ void doStartBlock(int StartNode, vector<vector<int>> *invertList, bool *startVis
 	}
 }
 
+//按照预估的要搜索的block数量为每个线程尽量平均分配任务
 void AssginTask(vector<vector<int>> *invertList, int PairDist, vector<KeyWord>& KSet){
 	int taskArraySize = threadNum;
 	vector<vector<int>>** task = new vector<vector<int>> *[threadNum];
@@ -344,6 +342,7 @@ void AssginTask(vector<vector<int>> *invertList, int PairDist, vector<KeyWord>& 
 
 }
 
+//寻找满足第二距离约束的点集合
 void SearchSecondDist(int curlevel, int lastlevel, int PairDist, VisitInfo *CliqueList, vector<KeyWord>& KSet, bool *visited, vector<int>** blockToSearch) {
 
 	int threadId = omp_get_thread_num();
@@ -445,7 +444,7 @@ void SearchSecondDist(int curlevel, int lastlevel, int PairDist, VisitInfo *Cliq
 }
 
 
-
+//在SearchSecondDist内循环中使用的特定函数
 void SearchFirstDist_2(int StartNode, vector<vector<int>> *invertList, bool *visited, vector<KeyWord>& KSet, int Farthest, vector<int>* blockToSearch) {
 
 	int IntraID = 0;  	//find intra block's nodeid
@@ -495,7 +494,7 @@ void SearchFirstDist_2(int StartNode, vector<vector<int>> *invertList, bool *vis
 	sRmtpDistMapArray[threadId]->clear();
 }
 
-
+//在SearchSecondDist内循环中使用的特定函数
 void doStartBlock_2(int StartNode, vector<vector<int>> *invertList, bool *startVisit, vector<KeyWord>& KSet, int Farthest, vector<int>* blockToSearch){
 	int blockcount2 = (*BlockID)[StartNode].size();
 	for (int BCount = 0; BCount < blockcount2; BCount++) {
@@ -533,6 +532,7 @@ void doStartBlock_2(int StartNode, vector<vector<int>> *invertList, bool *startV
 	}
 }
 
+//在SearchSecondDist内循环中使用的特定函数
 void searchPortalMatrix_2(int startNode, int pnode, int spDist, int Farthest, vector<vector<int>> *invertList, bool *visited, hash_map<int, int>* sRmtpDistMap, vector<KeyWord>& KSet,
 	vector<int>* blockToSearch){
 	hash_map<int, int>::iterator h_it;
@@ -548,7 +548,6 @@ void searchPortalMatrix_2(int startNode, int pnode, int spDist, int Farthest, ve
 		bool feasiblePortal = true;
 		if ((portalDist + spDist <= Farthest && portalDist != 0) || pnode == portalGlobalId)  //portalIndex
 		{
-			
 			sRmtpDist = portalDist + spDist;
 			h_it = sRmtpDistMap->find(portalGlobalId);
 			if (h_it != sRmtpDistMap->end()){
@@ -617,6 +616,7 @@ void searchPortalMatrix_2(int startNode, int pnode, int spDist, int Farthest, ve
 
 }
 
+//初步获取要搜索的block的数量
 void GetBlockToSearch(vector<vector<int>>* ilist, vector<int> *inblockToSearch){
 	for (vector<vector<int>>::iterator outIt = ilist->begin(); outIt != ilist->end(); outIt++){
 		for (vector<int>::iterator it = outIt->begin(); it != outIt->end(); it++){
@@ -638,6 +638,7 @@ void GetBlockToSearch(vector<vector<int>>* ilist, vector<int> *inblockToSearch){
 	}
 }
 
+//输出结果
 void OutPutResultToFile(char filename[], int Rate) {
 	FILE *file = fopen(filename, "a+");
 

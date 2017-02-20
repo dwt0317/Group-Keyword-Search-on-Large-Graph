@@ -6,11 +6,12 @@
 
 #define MAX_KEYWORD_NUM 10 
 
-#define MAX_RATING 10 //rate <= MAX_RATING
+#define MAX_RATING 10 //rating score <= MAX_RATING
 
 extern int NodeKW[MAX_NODE_NUM]; //node keyword info
-extern int NodeRating[MAX_NODE_NUM]; //node rate
+extern int NodeRating[MAX_NODE_NUM]; //node rating score
 
+//enumeration 可以限定传入参数的范围，如果不在列表中就会报错；同一枚举中枚举子的取值不需要唯一
 typedef enum KeyWord {
 	Non = 0,
 	Shop = 1,
@@ -25,13 +26,15 @@ typedef enum KeyWord {
 	Bank = 10
 }KeyWord;
 
-//生成keyword
+//generate keyword from Non to MaxKeywordNumber [0, 1, 2, 4, ..., 2^MaxKeyWordNum]
+//then output to file filename
 bool generateKeyword(int NodeNum, int MaxKeyWordNum, std::string filename);
 
-//范围 [0...MaxRating - 1]
+//random generate rating score for NodeNum
+//rating score range from [0...MaxRating - 1]
 bool generateRating(int NodeNum, int MaxRating, std::string filename);
 
-//读取rate和keyword信息
+//read the data from file and store them in Store array
 bool getData(std::string filename, int NodeNum, int *Store);
 
 #endif

@@ -131,7 +131,7 @@ void Partition::findBlockPortalNodes(Graph& graph) {
 		}
 
 		int Ei = PEdgeArray[i].size(); //node i的pedge的数目
-		if (Ei) {
+		if (Ei) { //有关于此点的boundary edge
 			int BSi = (*BlockArray)[(*BlockID)[i][0]].getBlockSize(); //node i所在block的大小
 			bool Stop = false;
 			for (list<int>::iterator itr = PEdgeArray[i].begin(); !Stop && itr != PEdgeArray[i].end(); itr++) {
@@ -143,7 +143,7 @@ void Partition::findBlockPortalNodes(Graph& graph) {
 						++itrEj;
 				}
 				int Ej = PEdgeArray[*itr].size();
-				if (Ej) {
+				if (Ej) {  //不会为false,因为总会有(itr,i)的记录
 					int BSj = (*BlockArray)[(*BlockID)[*itr][0]].getBlockSize();
 
 					//从一条边上选出分值较高的点
@@ -159,6 +159,7 @@ void Partition::findBlockPortalNodes(Graph& graph) {
 						for (list<int>::iterator itrAdj = PEdgeArray[i].begin();
 							itrAdj != PEdgeArray[i].end(); itrAdj++) {
 							int blockID = (*BlockID)[*itrAdj][0];
+							//检验是否刚刚加入过
 							if (!(*BlockArray)[blockID].TestRepetition(i)) {
 
 								(*BlockArray)[blockID].AddNode(i);

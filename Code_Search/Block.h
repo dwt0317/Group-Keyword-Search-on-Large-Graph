@@ -5,6 +5,7 @@
 #include "macro.h" 
 #include "NodeDist.h" 
 
+//згЭМ
 class Block
 {
 public:
@@ -18,9 +19,9 @@ public:
 	void release(void);
 
 	int mID;
-	int mNodeNum; 
-	int mPNodePos; 
-	
+	int mNodeNum;
+	int mPNodePos;
+
 	std::vector<int> *mNodeList;
 	int **InSDist;
 

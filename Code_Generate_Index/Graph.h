@@ -4,10 +4,9 @@
 #include <vector>
 #include "EdgeNode.h"
 
-//#define MAX_NODE_NUM 5000
 #define MAX_NODE_NUM 1070376
-//#define MAX_NODE_NUM 264346
-//#define MAX_NODE_NUM 20000
+
+//图的定义类
 class Graph
 {
 public:

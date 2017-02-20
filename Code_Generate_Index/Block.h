@@ -1,4 +1,4 @@
-#ifndef _BLOCK_H
+ï»¿#ifndef _BLOCK_H
 #define _BLOCK_H
 
 #include <string.h> //for memcpy
@@ -8,16 +8,18 @@
 
 #define MAX_BLOCK_NODE 300
 extern int** AdjMatrix;
+
+//å­å›¾çš„å®šä¹‰ç±»
 class Block
 {
 public:
 	Block();
-	Block(int ID, int NodeNum, int *NodeList); //Éú³Énodelist of block
+	Block(int ID, int NodeNum, int *NodeList); //ç”Ÿæˆnodelist of block
 	Block(const Block& cpy);
 	~Block();
 
-	void AddNode(int NodeID) { //ÒªÔÚ TestRepetitionÖ®ºóµ÷ÓÃ£¬±ÜÃâÖØ¸´
-		mNodeList->push_back(NodeID); //Ìí¼Ónode
+	void AddNode(int NodeID) { //è¦åœ¨ TestRepetitionä¹‹åŽè°ƒç”¨ï¼Œé¿å…é‡å¤
+		mNodeList->push_back(NodeID); //æ·»åŠ node
 	}
 	void AddPivot(int NodeID){
 		pNodeList->push_back(NodeID);

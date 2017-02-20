@@ -7,6 +7,7 @@
 #include "Graph.h" //for graph
 #include "Block.h" //for block class
 
+//»®·Ö×ÓÍ¼
 class Partition
 {
 public:
